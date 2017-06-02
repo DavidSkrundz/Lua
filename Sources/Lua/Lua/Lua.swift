@@ -52,6 +52,9 @@ public final class Lua {
 	public func pop() -> Value {
 		let value: Value
 		switch self.raw.type(atIndex: TopIndex) {
+			case .Number:
+				self.raw.pushValue(atIndex: TopIndex)
+				value = Number(lua: self)
 			case .String:        value = self.raw.getString(atIndex: TopIndex)!
 		}
 		self.raw.pop(1)

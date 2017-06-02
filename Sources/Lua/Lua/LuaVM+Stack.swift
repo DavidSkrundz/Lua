@@ -22,4 +22,11 @@ extension LuaVM {
 		precondition(count >= 0)
 		lua_settop(self.state, -count - 1)
 	}
+	
+	/// Push a copy of the element at `Index` to the top of the stack
+	///
+	/// - Parameter index: The index of the element to copy
+	public func pushValue(atIndex index: Index) {
+		lua_pushvalue(self.state, index)
+	}
 }

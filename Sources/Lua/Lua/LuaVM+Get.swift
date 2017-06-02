@@ -21,4 +21,15 @@ extension LuaVM {
 		}
 		return String(cString: cstring)
 	}
+	
+	/// Push onto the stack the value `T[field]` where `T` is the `Table` at
+	/// `Index`
+	///
+	/// Does not use metamethods
+	/// 
+	/// - Parameter field: The `Index` of the `Table` that should be fetched
+	/// - Parameter index: The `Index` on the stack of the `Table` to fetch from
+	public func getFieldRaw(_ field: Index, atIndex index: Index) {
+		lua_rawgeti(self.state, index, field)
+	}
 }
