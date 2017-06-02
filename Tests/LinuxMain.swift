@@ -8,4 +8,5 @@ import XCTest
 
 XCTMain([
 	testCase(LuaTests.allTests),
+	testCase(StringTests.allTests),
 ])

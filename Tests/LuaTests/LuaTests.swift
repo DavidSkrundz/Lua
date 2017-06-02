@@ -16,3 +16,10 @@ class LuaTests: XCTestCase {
 		("testLua", testLua),
 	]
 }
+
+func AssertEqual(lhs: [Value], rhs: [Value],
+                 file: StaticString = #file, line: UInt = #line) {
+	if lhs != rhs {
+		XCTFail("\(lhs) is not equal to \(rhs)", file: file, line: line)
+	}
+}
