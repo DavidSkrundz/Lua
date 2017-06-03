@@ -29,8 +29,8 @@ public final class Number {
 		self.lua.push(valueOf: self.reference)
 		self.lua.push(valueOf: other.reference)
 		defer { self.lua.raw.pop(2) }
-		return self.lua.compare(index1: SecondIndex, index2: TopIndex, 
-		                        comparator: comparator)
+		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
+		                            comparator: comparator)
 	}
 	
 	/// Perform a comparison with an `Int`
@@ -43,8 +43,8 @@ public final class Number {
 		self.lua.push(valueOf: self.reference)
 		self.lua.push(value: rhs)
 		defer { self.lua.raw.pop(2) }
-		return self.lua.compare(index1: SecondIndex, index2: TopIndex,
-		                        comparator: comparator)
+		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
+		                            comparator: comparator)
 	}
 	
 	/// Perform a comparison with an `Int`
@@ -57,8 +57,8 @@ public final class Number {
 		self.lua.push(value: lhs)
 		self.lua.push(valueOf: self.reference)
 		defer { self.lua.raw.pop(2) }
-		return self.lua.compare(index1: SecondIndex, index2: TopIndex,
-		                        comparator: comparator)
+		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
+		                            comparator: comparator)
 	}
 }
 

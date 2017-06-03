@@ -31,6 +31,22 @@ class NumberTests: XCTestCase {
 		}
 	}
 	
+	func testNumberIntComparison() {
+		let lua = Lua()
+		lua.push(value: 5)
+		lua.push(value: 8)
+		let eight = lua.pop() as! Number
+		let five = lua.pop() as! Number
+		lua.push(value: five)
+		let five2 = lua.pop() as! Number
+		XCTAssertTrue(five == five2)
+		XCTAssertTrue(five < eight)
+		XCTAssertTrue(5 == five2)
+		XCTAssertTrue(7 < eight)
+		XCTAssertTrue(eight == 8)
+		XCTAssertTrue(five < 8)
+	}
+	
 	static var allTests = [
 		("testReturnNumber", testReturnNumber),
 		("testMultipleReturnNumbers", testMultipleReturnNumbers),

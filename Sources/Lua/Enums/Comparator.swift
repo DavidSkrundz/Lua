@@ -5,15 +5,7 @@
 
 import CLua
 
-public enum Comparator {
-	case Equal
-	case LessThan
-	case GreaterThan
-	case LessThanEqual
-	case GreaterThanEqual
-}
-
-internal enum LuaComparator: RawRepresentable {
+internal enum Comparator: RawRepresentable {
 	case Equal
 	case LessThan
 	case LessThanEqual

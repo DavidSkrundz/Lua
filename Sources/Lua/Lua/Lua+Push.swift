@@ -8,6 +8,7 @@ extension Lua {
 	internal func push(value: Value) {
 		switch value {
 			case is Int:    self.raw.push(value as! Int)
+			case is Number: self.push(valueOf: (value as! Number).reference)
 			default:        fatalError("Unhandled type: \(type(of: value))")
 		}
 	}

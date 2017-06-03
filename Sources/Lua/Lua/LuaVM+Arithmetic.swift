@@ -15,7 +15,7 @@ extension LuaVM {
 	/// - Returns: `true` if both indices are valid and the comparison operator 
 	///            holds true
 	internal func compare(index1: Index, index2: Index,
-	                    comparator: LuaComparator) -> Bool {
+	                      comparator: Comparator) -> Bool {
 		return lua_compare(self.state, index1, index2, comparator.rawValue) == 1
 	}
 }
