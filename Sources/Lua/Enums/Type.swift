@@ -11,11 +11,11 @@ public enum Type: RawRepresentable {
 	
 	public typealias RawValue = Int32
 	
-	public init?(rawValue: RawValue) {
+	public init(rawValue: RawValue) {
 		switch rawValue {
 			case LUA_TNUMBER:        self = .Number
 			case LUA_TSTRING:        self = .String
-			default:                 return nil
+			default:                 fatalError("Unhandled value: \(rawValue)")
 		}
 	}
 	

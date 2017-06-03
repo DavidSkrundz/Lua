@@ -20,12 +20,12 @@ internal enum LuaComparator: RawRepresentable {
 	
 	public typealias RawValue = Int32
 	
-	public init?(rawValue: RawValue) {
+	public init(rawValue: RawValue) {
 		switch rawValue {
 			case LUA_OPEQ: self = .Equal
 			case LUA_OPLT: self = .LessThan
 			case LUA_OPLE: self = .LessThanEqual
-			default:       return nil
+			default:       fatalError("Unhandled value: \(rawValue)")
 		}
 	}
 	

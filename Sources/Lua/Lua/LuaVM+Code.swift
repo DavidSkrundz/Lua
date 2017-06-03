@@ -24,7 +24,7 @@ extension LuaVM {
 	                          messageHandlerIndex: Index = 0) throws {
 		let result = lua_pcallk(self.state, nargs, nrets, messageHandlerIndex,
 		                        0, nil)
-		let status = Status(rawValue: result)!
+		let status = Status(rawValue: result)
 		if status == .OK { return }
 		let message = self.getString(atIndex: TopIndex)!
 		self.pop(1)
@@ -45,7 +45,7 @@ extension LuaVM {
 	///           `RuntimeError.GarbageCollector` depending on the error
 	public func load(code: String) throws {
 		let result = luaL_loadstring(self.state, code)
-		let status = Status(rawValue: result)!
+		let status = Status(rawValue: result)
 		if status == .OK { return }
 		let message = self.getString(atIndex: TopIndex)!
 		self.pop(1)

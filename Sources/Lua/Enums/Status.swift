@@ -16,7 +16,7 @@ internal enum Status: RawRepresentable {
 	
 	internal typealias RawValue = Int32
 	
-	internal init?(rawValue: RawValue) {
+	internal init(rawValue: RawValue) {
 		switch rawValue {
 			case LUA_OK:        self = .OK
 			case LUA_YIELD:     self = .Yield
@@ -25,7 +25,7 @@ internal enum Status: RawRepresentable {
 			case LUA_ERRMEM:    self = .MemoryError
 			case LUA_ERRGCMM:   self = .ErrGCMM
 			case LUA_ERRERR:    self = .Error
-			default:            return nil
+			default:            fatalError("Unhandled value: \(rawValue)")
 		}
 	}
 	
