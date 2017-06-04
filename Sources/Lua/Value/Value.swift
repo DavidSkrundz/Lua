@@ -12,6 +12,8 @@
 public protocol Value {}
 
 extension Int: Value {}
+extension UInt32: Value {}
+extension Double: Value {}
 extension String: Value {}
 
 extension Number: Value {}

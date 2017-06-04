@@ -39,12 +39,50 @@ class NumberTests: XCTestCase {
 		let five = lua.pop() as! Number
 		lua.push(value: five)
 		let five2 = lua.pop() as! Number
-		XCTAssertTrue(five == five2)
-		XCTAssertTrue(five < eight)
-		XCTAssertTrue(5 == five2)
-		XCTAssertTrue(7 < eight)
-		XCTAssertTrue(eight == 8)
-		XCTAssertTrue(five < 8)
+		XCTAssertFalse(five != five2)
+		XCTAssertFalse(five >= eight)
+		XCTAssertFalse(5 != five2)
+		XCTAssertFalse(7 >= eight)
+		XCTAssertFalse(eight != 8)
+		XCTAssertFalse(five >= 8)
+		XCTAssertTrue(five > 2)
+		XCTAssertTrue(9 > five)
+	}
+	
+	func testNumberUIntComparison() {
+		let lua = Lua()
+		lua.push(value: UInt32(5))
+		lua.push(value: UInt32(8))
+		let eight = lua.pop() as! Number
+		let five = lua.pop() as! Number
+		lua.push(value: five)
+		let five2 = lua.pop() as! Number
+		XCTAssertFalse(five != five2)
+		XCTAssertFalse(five >= eight)
+		XCTAssertFalse(UInt32(5) != five2)
+		XCTAssertFalse(UInt32(7) >= eight)
+		XCTAssertFalse(eight != UInt32(8))
+		XCTAssertFalse(five >= UInt32(8))
+		XCTAssertTrue(five > UInt32(2))
+		XCTAssertTrue(UInt32(6) > five)
+	}
+	
+	func testNumberDoubleComparison() {
+		let lua = Lua()
+		lua.push(value: 5.3)
+		lua.push(value: 8.8)
+		let eight = lua.pop() as! Number
+		let five = lua.pop() as! Number
+		lua.push(value: five)
+		let five2 = lua.pop() as! Number
+		XCTAssertFalse(five != five2)
+		XCTAssertFalse(five >= eight)
+		XCTAssertFalse(5.3 != five2)
+		XCTAssertFalse(7.1 >= eight)
+		XCTAssertFalse(eight != 8.8)
+		XCTAssertFalse(five >= 8.8)
+		XCTAssertTrue(five > 2.6)
+		XCTAssertTrue(5.3001 > five)
 	}
 	
 	func testNumberConversion() {
