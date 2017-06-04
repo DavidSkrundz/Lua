@@ -6,6 +6,33 @@
 import CLua
 
 extension LuaVM {
+	/// Convert the item at `Index` to a `Double`
+	///
+	/// - Returns: A `Double` or `nil` if the value is not convertible
+	public func getDouble(atIndex index: Index) -> Double? {
+		var isNumber: Index = 0
+		let value = lua_tonumberx(self.state, index, &isNumber)
+		return (isNumber == 1) ? value : nil
+	}
+	
+	/// Convert the item at `Index` to an `Int`
+	///
+	/// - Returns: An `Int` or `nil` if the value is not convertible
+	public func getInt(atIndex index: Index) -> Int? {
+		var isInteger: Index = 0
+		let value = lua_tointegerx(self.state, index, &isInteger)
+		return (isInteger == 1) ? value : nil
+	}
+	
+	/// Convert the item at `Index` to a UInt32
+	///
+	/// - Returns: A `UInt32` or `nil` if the value is not convertible
+	public func getUInt(atIndex index: Index) -> UInt32? {
+		var isUInteger: Index = 0
+		let value = lua_tounsignedx(self.state, index, &isUInteger)
+		return (isUInteger == 1) ? value : nil
+	}
+	
 	/// Convert the item at `Index` to a `String`
 	///
 	/// Cannot contain embedded zeros

@@ -47,8 +47,27 @@ class NumberTests: XCTestCase {
 		XCTAssertTrue(five < 8)
 	}
 	
+	func testNumberConversion() {
+		do {
+			let lua = Lua()
+			guard let number = try lua.run("return -4.3").first as? Number else {
+				XCTFail()
+				return
+			}
+			XCTAssertEqual(number.intValue, Int(-4))
+			XCTAssertEqual(number.uintValue, UInt32(bitPattern: Int32(-4)))
+			XCTAssertEqual(number.doubleValue, Double(-4.3))
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+	}
+	
 	static var allTests = [
 		("testReturnNumber", testReturnNumber),
 		("testMultipleReturnNumbers", testMultipleReturnNumbers),
+		("testNumberIntComparison", testNumberIntComparison),
+		("testNumberConversion", testNumberConversion),
 	]
 }

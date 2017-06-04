@@ -19,6 +19,27 @@ public final class Number {
 		self.lua.release(self.reference)
 	}
 	
+	/// - Returns: The `Int` representation of `self`
+	public var intValue: Int {
+		self.lua.push(valueOf: self.reference)
+		defer { self.lua.raw.pop(1) }
+		return self.lua.raw.getInt(atIndex: TopIndex)!
+	}
+	
+	/// - Returns: The `UInt32` representation of `self`
+	public var uintValue: UInt32 {
+		self.lua.push(valueOf: self.reference)
+		defer { self.lua.raw.pop(1) }
+		return self.lua.raw.getUInt(atIndex: TopIndex)!
+	}
+	
+	/// - Returns: The `Double` representation of `self`
+	public var doubleValue: Double {
+		self.lua.push(valueOf: self.reference)
+		defer { self.lua.raw.pop(1) }
+		return self.lua.raw.getDouble(atIndex: TopIndex)!
+	}
+	
 	/// Perform a comparison with another `Number`
 	///
 	/// - Parameter other: The `Number` to compare to
