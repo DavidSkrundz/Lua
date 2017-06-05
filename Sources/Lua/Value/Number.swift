@@ -100,6 +100,10 @@ public func <(lhs: Number, rhs: Number) -> Bool {
 	return lhs.compare(to: rhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Number, rhs: Number) -> Bool {
+	return lhs.compare(to: rhs, comparator: .LessThanEqual)
+}
+
 // Int
 public func ==(lhs: Int, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .Equal)
@@ -109,8 +113,11 @@ public func <(lhs: Int, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Int, rhs: Number) -> Bool {
+	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: Int, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: Int, rhs: Number) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: Int, rhs: Number) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: Int, rhs: Number) -> Bool { return !(lhs < rhs) }
 
@@ -122,8 +129,11 @@ public func <(lhs: Number, rhs: Int) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Number, rhs: Int) -> Bool {
+	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: Number, rhs: Int) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: Number, rhs: Int) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: Number, rhs: Int) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: Number, rhs: Int) -> Bool { return !(lhs < rhs) }
 
@@ -136,8 +146,11 @@ public func <(lhs: UInt32, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .LessThan)
 }
 
+public func <=(lhs: UInt32, rhs: Number) -> Bool {
+	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: UInt32, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: UInt32, rhs: Number) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: UInt32, rhs: Number) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: UInt32, rhs: Number) -> Bool { return !(lhs < rhs) }
 
@@ -149,8 +162,11 @@ public func <(lhs: Number, rhs: UInt32) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Number, rhs: UInt32) -> Bool {
+	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: Number, rhs: UInt32) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: Number, rhs: UInt32) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: Number, rhs: UInt32) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: Number, rhs: UInt32) -> Bool { return !(lhs < rhs) }
 
@@ -163,8 +179,11 @@ public func <(lhs: Double, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Double, rhs: Number) -> Bool {
+	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: Double, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: Double, rhs: Number) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: Double, rhs: Number) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: Double, rhs: Number) -> Bool { return !(lhs < rhs) }
 
@@ -176,7 +195,10 @@ public func <(lhs: Number, rhs: Double) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .LessThan)
 }
 
+public func <=(lhs: Number, rhs: Double) -> Bool {
+	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
+}
+
 public func !=(lhs: Number, rhs: Double) -> Bool { return !(lhs == rhs) }
-public func <=(lhs: Number, rhs: Double) -> Bool { return lhs < rhs || lhs == rhs }
 public func >(lhs: Number, rhs: Double) -> Bool { return !(lhs <= rhs) }
 public func >=(lhs: Number, rhs: Double) -> Bool { return !(lhs < rhs) }
