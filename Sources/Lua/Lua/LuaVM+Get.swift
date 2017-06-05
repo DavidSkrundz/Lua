@@ -49,6 +49,21 @@ extension LuaVM {
 		return String(cString: cstring)
 	}
 	
+}
+
+extension LuaVM {
+	/// Push onto the stack the value `T[k]` where `T` is the table at `index`
+	/// and `k` is the top value of the stack
+	///
+	/// May trigger a metamethod for the "index" event
+	///
+	/// - Note: The top value of the stack is replaced by the result
+	///
+	/// - Parameter index: The `Index` of the table on the stack
+	public func getTable(atIndex index: Index) {
+		lua_gettable(self.state, index)
+	}
+	
 	/// Push onto the stack the value `T[field]` where `T` is the `Table` at
 	/// `Index`
 	///
@@ -56,7 +71,7 @@ extension LuaVM {
 	/// 
 	/// - Parameter field: The `Index` of the `Table` that should be fetched
 	/// - Parameter index: The `Index` on the stack of the `Table` to fetch from
-	public func getFieldRaw(_ field: Index, atIndex index: Index) {
+	internal func getFieldRaw(_ field: Index, atIndex index: Index) {
 		lua_rawgeti(self.state, index, field)
 	}
 }

@@ -10,4 +10,5 @@ XCTMain([
 	testCase(LuaTests.allTests),
 	testCase(NumberTests.allTests),
 	testCase(StringTests.allTests),
+	testCase(TableTests.allTests),
 ])

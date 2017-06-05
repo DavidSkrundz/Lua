@@ -20,4 +20,9 @@ extension LuaVM {
 	public func push(_ value: UInt32) {
 		lua_pushunsigned(self.state, value)
 	}
+	
+	/// Push a `String` onto the stack
+	public func push(_ value: String) {
+		_ = lua_pushstring(self.state, value)
+	}
 }

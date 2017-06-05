@@ -19,6 +19,12 @@ public final class Lua {
 		self.raw = LuaVM()
 	}
 	
+	/// The `Table` containing all of the global variables
+	public var globals: Table {
+		self.raw.getFieldRaw(RegistryGlobalsIndex, atIndex: RegistryIndex)
+		return Table(lua: self)
+	}
+	
 	/// Run a `String` of Lua code as a `Function` that takes no arguments
 	///
 	/// - Parameter code: The Lua code to run
@@ -56,6 +62,9 @@ public final class Lua {
 				self.raw.pushValue(atIndex: TopIndex)
 				value = Number(lua: self)
 			case .String:        value = self.raw.getString(atIndex: TopIndex)!
+			case .Table:
+				self.raw.pushValue(atIndex: TopIndex)
+				value = Table(lua: self)
 		}
 		self.raw.pop(1)
 		return value

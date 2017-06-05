@@ -26,21 +26,21 @@ public final class Number {
 	
 	/// - Returns: The `Int` representation of `self`
 	public var intValue: Int {
-		self.lua.push(valueOf: self.reference)
+		self.lua.push(value: self)
 		defer { self.lua.raw.pop(1) }
 		return self.lua.raw.getInt(atIndex: TopIndex)!
 	}
 	
 	/// - Returns: The `UInt32` representation of `self`
 	public var uintValue: UInt32 {
-		self.lua.push(valueOf: self.reference)
+		self.lua.push(value: self)
 		defer { self.lua.raw.pop(1) }
 		return self.lua.raw.getUInt(atIndex: TopIndex)!
 	}
 	
 	/// - Returns: The `Double` representation of `self`
 	public var doubleValue: Double {
-		self.lua.push(valueOf: self.reference)
+		self.lua.push(value: self)
 		defer { self.lua.raw.pop(1) }
 		return self.lua.raw.getDouble(atIndex: TopIndex)!
 	}
@@ -52,8 +52,8 @@ public final class Number {
 	///
 	/// - Returns: `true` if the comparison holds
 	fileprivate func compare(to other: Number, comparator: Comparator) -> Bool {
-		self.lua.push(valueOf: self.reference)
-		self.lua.push(valueOf: other.reference)
+		self.lua.push(value: self)
+		self.lua.push(value: other)
 		defer { self.lua.raw.pop(2) }
 		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
 		                            comparator: comparator)
@@ -67,7 +67,7 @@ public final class Number {
 	/// - Returns: `true` if the comparison holds
 	fileprivate func compare<RHS: NumberComparable>(toRHS rhs: RHS,
 	                         comparator: Comparator) -> Bool {
-		self.lua.push(valueOf: self.reference)
+		self.lua.push(value: self)
 		self.lua.push(value: rhs)
 		defer { self.lua.raw.pop(2) }
 		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
@@ -83,7 +83,7 @@ public final class Number {
 	fileprivate func compare<LHS: NumberComparable>(toLHS lhs: LHS,
 	                         comparator: Comparator) -> Bool {
 		self.lua.push(value: lhs)
-		self.lua.push(valueOf: self.reference)
+		self.lua.push(value: self)
 		defer { self.lua.raw.pop(2) }
 		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
 		                            comparator: comparator)
