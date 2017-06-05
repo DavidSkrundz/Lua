@@ -74,4 +74,14 @@ extension LuaVM {
 	internal func getFieldRaw(_ field: Index, atIndex index: Index) {
 		lua_rawgeti(self.state, index, field)
 	}
+	
+	/// Create a new empty `Table` and push it onto the stack
+	///
+	/// - Parameter size: An estimate of how many elements the table will have
+	///                   as a sequence
+	/// - Parameter count: An estimate of how many other elements the table will
+	///                    have
+	internal func createTable(size: Count, count: Count) {
+		lua_createtable(self.state, size, count)
+	}
 }

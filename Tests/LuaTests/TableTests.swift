@@ -28,6 +28,22 @@ class TableTests: XCTestCase {
 		XCTAssertTrue(globals == copy)
 	}
 	
+	func testCreateTable() {
+		do {
+			let lua = Lua()
+			let table = lua.createTable()
+			table["count"] = 8
+			lua.globals["data"] = table
+			let results = try lua.run("return data.count")
+			AssertEqual(lhs: results, rhs: [8])
+			XCTAssertEqual(lua.raw.stackSize(), 0)
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+	}
+	
 	static var allTests = [
 		("testAccessGlobals", testAccessGlobals),
 		("testEquality", testEquality),
