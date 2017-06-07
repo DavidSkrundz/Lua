@@ -59,6 +59,7 @@ class NumberTests: XCTestCase {
 		let five2 = lua.pop() as! Number
 		XCTAssertFalse(five != five2)
 		XCTAssertFalse(five >= eight)
+		XCTAssertTrue(five <= eight)
 		XCTAssertFalse(UInt32(5) != five2)
 		XCTAssertFalse(UInt32(7) >= eight)
 		XCTAssertFalse(eight != UInt32(8))
