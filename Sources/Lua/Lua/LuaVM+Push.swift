@@ -25,4 +25,12 @@ extension LuaVM {
 	public func push(_ value: String) {
 		_ = lua_pushstring(self.state, value)
 	}
+	
+	/// Push a `LightUserData` onto the stack
+	///
+	/// - Note: This only creates a `weak` reference and will not prevent the
+	///         `pointee` from being released
+	public func push(_ value: UnsafeMutableRawPointer) {
+		lua_pushlightuserdata(self.state, value)
+	}
 }

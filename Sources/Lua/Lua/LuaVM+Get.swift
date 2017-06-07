@@ -49,6 +49,12 @@ extension LuaVM {
 		return String(cString: cstring)
 	}
 	
+	/// Convert the item at `Index` to a pointer
+	///
+	/// - Returns: Either a pointer to the `UserData`, `LightUserData` or `nil`
+	public func getUserData(atIndex index: Index) -> UnsafeMutableRawPointer? {
+		return lua_touserdata(self.state, index)
+	}
 }
 
 extension LuaVM {
