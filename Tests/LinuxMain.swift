@@ -11,5 +11,6 @@ XCTMain([
 	testCase(NumberTests.allTests),
 	testCase(StringTests.allTests),
 	testCase(TableTests.allTests),
+	testCase(FunctionTests.allTests),
 	testCase(UserDataTests.allTests),
 ])

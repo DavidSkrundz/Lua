@@ -23,6 +23,14 @@ public final class LuaVM {
 		self.state = luaL_newstate()
 	}
 	
+	/// Create a new LuaVM from a lua_state pointer
+	///
+	/// - Parameter state: The state pointer
+	internal init(state: OpaquePointer!) {
+		self.shouldDeinit = false
+		self.state = state
+	}
+	
 	deinit {
 		if self.shouldDeinit {
 			lua_close(self.state)

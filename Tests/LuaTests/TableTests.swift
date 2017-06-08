@@ -35,7 +35,7 @@ class TableTests: XCTestCase {
 			table["count"] = 8
 			lua.globals["data"] = table
 			let results = try lua.run("return data.count")
-			AssertEqual(lhs: results, rhs: [8])
+			AssertEqual(results, [8])
 			XCTAssertEqual(lua.raw.stackSize(), 0)
 		} catch let e as LuaError {
 			XCTFail(e.description)

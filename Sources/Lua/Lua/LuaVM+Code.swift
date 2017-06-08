@@ -56,4 +56,11 @@ extension LuaVM {
 			default:           fatalError("Unhandled Status: \(status)")
 		}
 	}
+	
+	/// Load a `CLuaFunction` onto the stack
+	///
+	/// - Parameter function: The function to load
+	internal func load(function: @escaping CLuaFunction, valueCount: Count) {
+		lua_pushcclosure(self.state, function, valueCount)
+	}
 }

@@ -11,7 +11,7 @@ class NumberTests: XCTestCase {
 		do {
 			let lua = Lua()
 			let results = try lua.run("return 5")
-			AssertEqual(lhs: results, rhs: [5])
+			AssertEqual(results, [5])
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
@@ -23,7 +23,7 @@ class NumberTests: XCTestCase {
 		do {
 			let lua = Lua()
 			let results = try lua.run("return 0, -34")
-			AssertEqual(lhs: results, rhs: [0, -34])
+			AssertEqual(results, [0, -34])
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
@@ -107,6 +107,8 @@ class NumberTests: XCTestCase {
 		("testReturnNumber", testReturnNumber),
 		("testMultipleReturnNumbers", testMultipleReturnNumbers),
 		("testNumberIntComparison", testNumberIntComparison),
+		("testNumberUIntComparison", testNumberUIntComparison),
+		("testNumberDoubleComparison", testNumberDoubleComparison),
 		("testNumberConversion", testNumberConversion),
 	]
 }

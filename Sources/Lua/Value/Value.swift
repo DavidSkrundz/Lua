@@ -21,6 +21,7 @@ extension String: Value {}
 
 extension Number: Value {}
 extension Table: Value {}
+extension Function: Value {}
 extension LightUserData: Value {}
 
 public func ==(lhs: Value, rhs: Value) -> Bool {
@@ -31,6 +32,7 @@ public func ==(lhs: Value, rhs: Value) -> Bool {
 		case is (String, String):               return (lhs as! String) == (rhs as! String)
 		case is (Number, Number):               return (lhs as! Number) == (rhs as! Number)
 		case is (Table, Table):                 return (lhs as! Table) == (rhs as! Table)
+		case is (Function, Function):           return (lhs as! Function) == (rhs as! Function)
 		case is (LightUserData, LightUserData): return (lhs as! LightUserData) == (rhs as! LightUserData)
 		
 		case is (Int, Number):                  return (lhs as! Int) == (rhs as! Number)

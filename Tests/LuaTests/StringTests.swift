@@ -11,7 +11,7 @@ class StringTests: XCTestCase {
 		do {
 			let lua = Lua()
 			let results = try lua.run("return \"Hello\"")
-			AssertEqual(lhs: results, rhs: ["Hello"])
+			AssertEqual(results, ["Hello"])
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
@@ -23,7 +23,7 @@ class StringTests: XCTestCase {
 		do {
 			let lua = Lua()
 			let results = try lua.run("return \"Hello\", \"Wow\"")
-			AssertEqual(lhs: results, rhs: ["Hello", "Wow"])
+			AssertEqual(results, ["Hello", "Wow"])
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {

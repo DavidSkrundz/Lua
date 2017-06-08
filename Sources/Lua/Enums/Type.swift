@@ -10,6 +10,7 @@ public enum Type: RawRepresentable {
 	case Number
 	case String
 	case Table
+	case Function
 	
 	public typealias RawValue = Int32
 	
@@ -19,6 +20,7 @@ public enum Type: RawRepresentable {
 			case LUA_TNUMBER:        self = .Number
 			case LUA_TSTRING:        self = .String
 			case LUA_TTABLE:         self = .Table
+			case LUA_TFUNCTION:      self = .Function
 			default:                 fatalError("Unhandled value: \(rawValue)")
 		}
 	}
@@ -29,6 +31,7 @@ public enum Type: RawRepresentable {
 			case .Number:        return LUA_TNUMBER
 			case .String:        return LUA_TSTRING
 			case .Table:         return LUA_TTABLE
+			case .Function:      return LUA_TFUNCTION
 		}
 	}
 }

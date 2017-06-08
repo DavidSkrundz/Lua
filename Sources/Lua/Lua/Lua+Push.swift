@@ -14,6 +14,7 @@ extension Lua {
 			case is Number:        self.push(valueOf: (value as! Number).reference)
 			case is Table:         self.push(valueOf: (value as! Table).reference)
 			case is LightUserData: self.raw.push((value as! LightUserData).pointer)
+			case is Function:      self.push(valueOf: (value as! Function).reference)
 			default:               fatalError("Unhandled type: \(type(of: value))")
 		}
 	}
