@@ -47,5 +47,6 @@ class TableTests: XCTestCase {
 	static var allTests = [
 		("testAccessGlobals", testAccessGlobals),
 		("testEquality", testEquality),
+		("testCreateTable", testCreateTable),
 	]
 }
