@@ -41,7 +41,7 @@ public final class Table {
 	/// - Parameter rhs: The `Table` to compare to
 	///
 	/// - Returns: `true` if the `Table`s are the same object
-	fileprivate func compare(to other: Table) -> Bool {
+	fileprivate func isEqual(to other: Table) -> Bool {
 		self.lua.push(value: self)
 		self.lua.push(value: other)
 		defer { self.lua.raw.pop(2) }
@@ -53,5 +53,5 @@ public final class Table {
 extension Table: Equatable {}
 
 public func ==(lhs: Table, rhs: Table) -> Bool {
-	return lhs.compare(to: rhs)
+	return lhs.isEqual(to: rhs)
 }
