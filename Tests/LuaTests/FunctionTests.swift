@@ -20,6 +20,7 @@ class FunctionTests: XCTestCase {
 		lua.push(value: 10)
 		try! lua.raw.protectedCall(nargs: 2, nrets: 1)
 		XCTAssert(lua.pop() == 15)
+		XCTAssertEqual(lua.raw.stackSize(), 0)
 	}
 	
 	func testFunction() {
@@ -33,11 +34,60 @@ class FunctionTests: XCTestCase {
 			}
 			let values = try lua.call(function: addFunc, arguments: [7, 11])
 			AssertEqual(values, [18])
+			XCTAssertEqual(lua.raw.stackSize(), 0)
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
 			XCTFail(e.localizedDescription)
 		}
+	}
+	
+	func testWrappedFunction() {
+		do {
+			let lua = Lua()
+			let split = lua.createFunction([.String, .String]) { (values) -> [Value] in
+				let string = values[0] as! String
+				let separator = values[1] as! String
+				return string.components(separatedBy: separator)
+			}
+			lua.globals["split"] = split
+			let values = try lua.run("return split('first second', ' ')")
+			AssertEqual(values, ["first", "second"])
+			XCTAssertEqual(lua.raw.stackSize(), 0)
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+	}
+	
+	func testTypeChecker() {
+		let lua = Lua()
+		let stringAppend = lua.createFunction([.String, .String]) { (values) -> [Value] in
+			return [(values[0] as! String) + (values[1] as! String)]
+		}
+		lua.globals["append"] = stringAppend
+		
+		do {
+			let values = try lua.run("return append('one', 'two')")
+			AssertEqual(values, ["onetwo"])
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+		
+		do {
+			_ = try lua.run("return append(5, 'two')")
+			XCTFail()
+		} catch let LuaError.Runtime(message) {
+			XCTAssertEqual(message, "Invalid argument type. Found number expecting string")
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+		XCTAssertEqual(lua.raw.stackSize(), 0)
 	}
 	
 	func testEquality() {
@@ -50,6 +100,8 @@ class FunctionTests: XCTestCase {
 	static var allTests = [
 		("testRawFunction", testRawFunction),
 		("testFunction", testFunction),
+		("testWrappedFunction", testWrappedFunction),
+		("testTypeChecker", testTypeChecker),
 		("testEquality", testEquality),
 	]
 }

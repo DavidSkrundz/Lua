@@ -41,3 +41,9 @@ internal typealias CLuaFunction = @convention(c) (OpaquePointer?) -> Count
 ///
 /// - Returns: A list of values to return
 public typealias LuaFunction = (Lua) -> [Value]
+
+/// The signature of a Swift function that is wrapped to remove the `Lua` object
+/// and provides the arguments instead
+///
+/// - Returns: A list of values to return
+public typealias WrappedFunction = ([Value]) -> [Value]

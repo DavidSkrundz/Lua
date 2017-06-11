@@ -13,7 +13,7 @@ public final class Lua {
 	public static let patchVersion = LuaVM.patchVersion
 	
 	/// Holds `LuaFunction`s and `WrappedFunction`s indexed by a `Reference`
-	private var functions = [Int : Any]()
+	fileprivate var functions = [Int : Any]()
 	
 	public let raw: LuaVM
 	
@@ -130,27 +130,57 @@ public final class Lua {
 		// Push Reference index
 		self.push(value: index)
 		
-		self.raw.load(function: { (state) -> Count in
-			let lua = Lua(raw: LuaVM(state: state))
-			
-			let selfLuaIndex = lua.raw.upValueIndex(index: 1)
-			let selfLuaPointer = lua.raw.getUserData(atIndex: selfLuaIndex)
-			let selfLua = Unmanaged<Lua>
-				.fromOpaque(selfLuaPointer!)
-				.takeUnretainedValue()
-			
-			let closureIndexIndex = lua.raw.upValueIndex(index: 2)
-			let closureIndex = lua.raw.getInt(atIndex: closureIndexIndex)!
-			let closure = selfLua.functions[closureIndex] as! LuaFunction
-			
-			let values = closure(lua)
-			values.forEach { lua.push(value: $0) }
-			return Count(values.count)
-		}, valueCount: 2)
+		self.raw.load(function: wrapperFunction, valueCount: 2)
 		
 		let function = Function(lua: self)
 		assert(Int(function.reference.rawValue) == index)
 		self.functions[index] = closure
 		return function
 	}
+	
+	/// Create a new `Function` from a `([Value]) -> [Value]` closure
+	///
+	/// Used when the types of the arguments are fixed and an error should be
+	/// raised if the types don't match
+	///
+	/// - Parameter closure: The closure that will be run
+	///
+	/// - Returns: The new `Function`
+	public func createFunction(_ inputTypes: [Type],
+	                           closure: @escaping WrappedFunction) -> Function {
+		return self.createFunction { (lua) -> [Value] in
+			if Int(lua.raw.stackSize()) != inputTypes.count {
+				self.raw.error("Invalid number of arguments. Got \(lua.raw.stackSize()) expecting \(inputTypes.count)")
+			}
+			
+			var inputs = [Value]()
+			for type in inputTypes.reversed() {
+				let foundType = lua.raw.type(atIndex: TopIndex)
+				if type != foundType {
+					self.raw.error("Invalid argument type. Found \(foundType) expecting \(type)")
+				}
+				inputs.append(self.pop())
+			}
+			return closure(inputs.reversed())
+		}
+	}
+}
+
+/// Wraps a `LuaFunction` as a `CLuaFunction`
+private func wrapperFunction(_ state: OpaquePointer!) -> Count {
+	let lua = Lua(raw: LuaVM(state: state))
+	
+	let selfLuaIndex = lua.raw.upValueIndex(index: 1)
+	let selfLuaPointer = lua.raw.getUserData(atIndex: selfLuaIndex)
+	let selfLua = Unmanaged<Lua>
+		.fromOpaque(selfLuaPointer!)
+		.takeUnretainedValue()
+	
+	let closureIndexIndex = lua.raw.upValueIndex(index: 2)
+	let closureIndex = lua.raw.getInt(atIndex: closureIndexIndex)!
+	let closure = selfLua.functions[closureIndex] as! LuaFunction
+	
+	let values = closure(lua)
+	values.forEach { lua.push(value: $0) }
+	return Count(values.count)
 }

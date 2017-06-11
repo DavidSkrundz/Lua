@@ -35,3 +35,15 @@ public enum Type: RawRepresentable {
 		}
 	}
 }
+
+extension Type: CustomStringConvertible {
+	public var description: String {
+		switch self {
+			case .LightUserData: return "lightuserdata"
+			case .Number:        return "number"
+			case .String:        return "string"
+			case .Table:         return "table"
+			case .Function:      return "function"
+		}
+	}
+}
