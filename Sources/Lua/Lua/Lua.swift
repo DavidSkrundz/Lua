@@ -37,6 +37,10 @@ public final class Lua {
 	///
 	/// - Parameter code: The Lua code to run
 	///
+	/// - Throws: `LuaError.Syntax`, `LuaError.Runtime`, 
+	///           `LuaError.MessageHandler`, `LuaError.GarbageCollector` 
+	///           depending on the error
+	///
 	/// - Returns: Any `Value`s returned by the Lua code
 	public func run(_ code: String) throws -> [Value] {
 		let originalStackSize = self.raw.stackSize()
@@ -49,6 +53,9 @@ public final class Lua {
 	///
 	/// - Parameter function: The `Function` to call
 	/// - Parameter arguments: A list of arguments to pass
+	///
+	/// - Throws: `LuaError.Runtime`, `LuaError.MessageHandler`, or
+	///           `LuaError.GarbageCollector` depending on the error
 	///
 	/// - Returns: The `[Value]` returned by the function
 	public func call(function: Function,

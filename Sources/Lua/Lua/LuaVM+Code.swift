@@ -17,9 +17,8 @@ extension LuaVM {
 	///                                  used to modify (add information to) the
 	///                                  error message. Defaults to `0` (none)
 	///
-	/// - Throws: `RuntimeError.Runtime`, `RuntimeError.MemoryAllocation`,
-	///           `RuntimeError.MessageHandler`, or 
-	///           `RuntimeError.GarbageCollector` depending on the error
+	/// - Throws: `LuaError.Runtime`, `LuaError.MessageHandler`, or
+	///           `LuaError.GarbageCollector` depending on the error
 	public func protectedCall(nargs: Count, nrets: Count,
 	                          messageHandlerIndex: Index = 0) throws {
 		let result = lua_pcallk(self.state, nargs, nrets, messageHandlerIndex,
@@ -30,7 +29,7 @@ extension LuaVM {
 		self.pop(1)
 		switch status {
 			case .RunError:    throw LuaError.Runtime(message)
-			case .MemoryError: throw LuaError.MemoryAllocation(message)
+			case .MemoryError: fatalError("Out of memory")
 			case .Error:       throw LuaError.MessageHandler(message)
 			case .ErrGCMM:     throw LuaError.GarbageCollector(message)
 			default:           fatalError("Unhandled Status: \(status)")
@@ -41,8 +40,8 @@ extension LuaVM {
 	///
 	/// - Parameter code: The `String` to be loaded
 	///
-	/// - Throws: `CompilationError.Syntax`, `RuntimeError.MemoryAllocation`, or
-	///           `RuntimeError.GarbageCollector` depending on the error
+	/// - Throws: `LuaError.Syntax`, `LuaError.GarbageCollector` depending on 
+	///           the error
 	public func load(code: String) throws {
 		let result = luaL_loadstring(self.state, code)
 		let status = Status(rawValue: result)
@@ -51,7 +50,7 @@ extension LuaVM {
 		self.pop(1)
 		switch status {
 			case .SyntaxError: throw LuaError.Syntax(message)
-			case .MemoryError: throw LuaError.MemoryAllocation(message)
+			case .MemoryError: fatalError("Out of memory")
 			case .ErrGCMM:     throw LuaError.GarbageCollector(message)
 			default:           fatalError("Unhandled Status: \(status)")
 		}
