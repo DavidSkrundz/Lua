@@ -157,16 +157,16 @@ public final class Lua {
 	                           closure: @escaping WrappedFunction) -> Function {
 		return self.createFunction { (lua) -> [Value] in
 			if Int(lua.raw.stackSize()) != inputTypes.count {
-				self.raw.error("Invalid number of arguments. Got \(lua.raw.stackSize()) expecting \(inputTypes.count)")
+				lua.raw.error("Invalid number of arguments. Got \(lua.raw.stackSize()) expecting \(inputTypes.count)")
 			}
 			
 			var inputs = [Value]()
 			for type in inputTypes.reversed() {
 				let foundType = lua.raw.type(atIndex: TopIndex)
 				if type != foundType {
-					self.raw.error("Invalid argument type. Found \(foundType) expecting \(type)")
+					lua.raw.error("Invalid argument type. Found \(foundType) expecting \(type)")
 				}
-				inputs.append(self.pop())
+				inputs.append(lua.pop())
 			}
 			return closure(inputs.reversed())
 		}
