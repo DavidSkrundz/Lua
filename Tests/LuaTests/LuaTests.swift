@@ -17,6 +17,20 @@ class LuaTests: XCTestCase {
 	]
 }
 
+func AssertEqual(_ lhs: Value, _ rhs: Value,
+                 file: StaticString = #file, line: UInt = #line) {
+	if !equal(lhs, rhs) {
+		XCTFail("\(lhs) is not equal to \(rhs)", file: file, line: line)
+	}
+}
+
+func AssertNotEqual(_ lhs: Value, _ rhs: Value,
+                    file: StaticString = #file, line: UInt = #line) {
+	if equal(lhs, rhs) {
+		XCTFail("\(lhs) is not equal to \(rhs)", file: file, line: line)
+	}
+}
+
 func AssertEqual(_ lhs: [Value], _ rhs: [Value],
                  file: StaticString = #file, line: UInt = #line) {
 	if lhs != rhs {

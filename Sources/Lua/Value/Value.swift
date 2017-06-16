@@ -24,7 +24,7 @@ extension Table: Value {}
 extension Function: Value {}
 extension LightUserData: Value {}
 
-public func ==(lhs: Value, rhs: Value) -> Bool {
+public func equal(_ lhs: Value, _ rhs: Value) -> Bool {
 	switch (lhs, rhs) {
 		case is (Int, Int):                     return (lhs as! Int) == (rhs as! Int)
 		case is (UInt32, UInt32):               return (lhs as! UInt32) == (rhs as! UInt32)
@@ -35,25 +35,21 @@ public func ==(lhs: Value, rhs: Value) -> Bool {
 		case is (Function, Function):           return (lhs as! Function) == (rhs as! Function)
 		case is (LightUserData, LightUserData): return (lhs as! LightUserData) == (rhs as! LightUserData)
 		
-		case is (Int, Number):                  return (lhs as! Int) == (rhs as! Number)
-		case is (UInt32, Number):               return (lhs as! UInt32) == (rhs as! UInt32)
-		case is (Double, Number):               return (lhs as! Double) == (rhs as! Double)
-		case is (Number, Int):                  return (lhs as! Number) == (rhs as! Int)
-		case is (Number, Double):               return (lhs as! Double) == (rhs as! Double)
-		case is (Number, UInt32):               return (lhs as! UInt32) == (rhs as! UInt32)
+		case is (Int, Number):                  return (lhs as! Int) == (rhs as! Number).intValue
+		case is (UInt32, Number):               return (lhs as! UInt32) == (rhs as! Number).uintValue
+		case is (Double, Number):               return (lhs as! Double) == (rhs as! Number).doubleValue
+		case is (Number, Int):                  return (lhs as! Number).intValue == (rhs as! Int)
+		case is (Number, UInt32):               return (lhs as! Number).uintValue == (rhs as! UInt32)
+		case is (Number, Double):               return (lhs as! Number).doubleValue == (rhs as! Double)
 		
-		default: fatalError("Unhandled Value equality combination")
+		default:                                fatalError("Unhandled Value equality combination")
 	}
-}
-
-public func != (lhs: Value, rhs: Value) -> Bool {
-	return !(lhs == rhs)
 }
 
 public func ==(lhs: [Value], rhs: [Value]) -> Bool {
 	if lhs.count != rhs.count { return false }
 	return zip(lhs, rhs)
-		.map { $0 == $1 }
+		.map { equal($0, $1) }
 		.reduce(true) { $0 && $1 }
 }
 

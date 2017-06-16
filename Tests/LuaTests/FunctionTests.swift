@@ -19,7 +19,7 @@ class FunctionTests: XCTestCase {
 		lua.push(value: 5)
 		lua.push(value: 10)
 		try! lua.raw.protectedCall(nargs: 2, nrets: 1)
-		XCTAssert(lua.pop() == 15)
+		AssertEqual(lua.pop(), 15)
 		XCTAssertEqual(lua.raw.stackSize(), 0)
 	}
 	

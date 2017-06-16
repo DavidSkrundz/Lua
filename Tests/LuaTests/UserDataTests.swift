@@ -17,9 +17,9 @@ class UserDataTests: XCTestCase {
 		let lud2 = lua.pop()
 		let lud3 = lua.pop()
 		
-		XCTAssertTrue(lud1 == lud2)
-		XCTAssertFalse(lud1 == lud3)
-		XCTAssertFalse(lud2 == lud3)
+		AssertEqual(lud1, lud2)
+		AssertNotEqual(lud1, lud3)
+		AssertNotEqual(lud2, lud3)
 		XCTAssertEqual(lua.raw.stackSize(), 0)
 	}
 	

@@ -12,7 +12,7 @@ class TableTests: XCTestCase {
 			let lua = Lua()
 			lua.globals["a"] = 5
 			_ = try lua.run("a = a + 7")
-			XCTAssertTrue(lua.globals["a"] == 12)
+			AssertEqual(lua.globals["a"], 12)
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
@@ -25,7 +25,7 @@ class TableTests: XCTestCase {
 		let globals = lua.globals
 		lua.push(value: globals)
 		let copy = lua.pop()
-		XCTAssertTrue(globals == copy)
+		AssertEqual(globals, copy)
 	}
 	
 	func testCreateTable() {
