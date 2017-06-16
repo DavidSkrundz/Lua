@@ -4,7 +4,7 @@
 //
 
 /// Represent a table within Lua
-public final class Table {
+public class Table {
 	private let lua: Lua
 	internal let reference: Reference
 	

@@ -8,6 +8,7 @@ public enum LuaError: Error {
 	case Runtime(String)
 	case GarbageCollector(String)
 	case MessageHandler(String)
+	case TypeCreation(String)
 	
 	public var description: String {
 		switch self {
@@ -15,6 +16,7 @@ public enum LuaError: Error {
 			case let .Runtime(s):          return ".Runtime: \(s)"
 			case let .GarbageCollector(s): return ".GarbageCollector: \(s)"
 			case let .MessageHandler(s):   return ".MessageHandler: \(s)"
+			case let .TypeCreation(s):     return ".TypeCreation: \(s)"
 		}
 	}
 }

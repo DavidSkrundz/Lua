@@ -12,9 +12,6 @@ public final class Lua {
 	public static let minorVersion = LuaVM.minorVersion
 	public static let patchVersion = LuaVM.patchVersion
 	
-	/// Holds `LuaFunction`s and `WrappedFunction`s indexed by a `Reference`
-	internal var functions = [Int : Any]()
-	
 	/// Provides access to the raw Lua calls
 	public let raw: LuaVM
 	
@@ -26,6 +23,12 @@ public final class Lua {
 	/// Create a new Lua Thread
 	internal init(raw: LuaVM) {
 		self.raw = raw
+	}
+	
+	/// The `Table` that acts as a registry for the Lua Virtual Machine
+	public var registry: Table {
+		self.raw.pushValue(atIndex: RegistryIndex)
+		return Table(lua: self)
 	}
 	
 	/// The `Table` containing all of the global variables

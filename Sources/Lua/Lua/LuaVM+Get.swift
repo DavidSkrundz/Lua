@@ -90,4 +90,24 @@ extension LuaVM {
 	internal func createTable(size: Count, count: Count) {
 		lua_createtable(self.state, size, count)
 	}
+	
+	/// Create a new table, add it to the registry with key `name` and push it
+	/// onto the stack
+	///
+	/// - Throws: `LuaError.TypeCreation` if the key is already in use
+	internal func createMetatable(name: String) throws {
+		guard luaL_newmetatable(self.state, name) == 1 else {
+			throw LuaError.TypeCreation("Metatable with name '\(name)' already exists")
+		}
+	}
+	
+	/// Allocate a new block of memory of `size` bytes, and push a full userdata 
+	/// onto the stack
+	///
+	/// - Parameter size: The size of the block in bytes
+	///
+	/// - Returns: A pointer to the new block of memory
+	internal func createUserData(size: Int) -> UnsafeMutableRawPointer {
+		return lua_newuserdata(self.state, size)!
+	}
 }

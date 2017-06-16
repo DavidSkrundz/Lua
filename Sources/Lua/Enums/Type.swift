@@ -11,6 +11,9 @@ public enum Type: RawRepresentable {
 	case String
 	case Table
 	case Function
+	case UserData
+	
+	case Custom(UserDataConvertible.Type)
 	
 	public typealias RawValue = Int32
 	
@@ -21,6 +24,7 @@ public enum Type: RawRepresentable {
 			case LUA_TSTRING:        self = .String
 			case LUA_TTABLE:         self = .Table
 			case LUA_TFUNCTION:      self = .Function
+			case LUA_TUSERDATA:      self = .UserData
 			default:                 fatalError("Unhandled value: \(rawValue)")
 		}
 	}
@@ -32,6 +36,9 @@ public enum Type: RawRepresentable {
 			case .String:        return LUA_TSTRING
 			case .Table:         return LUA_TTABLE
 			case .Function:      return LUA_TFUNCTION
+			case .UserData:      return LUA_TUSERDATA
+			
+			case .Custom(_):     return -2 // Must be different
 		}
 	}
 }
@@ -39,11 +46,13 @@ public enum Type: RawRepresentable {
 extension Type: CustomStringConvertible {
 	public var description: String {
 		switch self {
-			case .LightUserData: return "lightuserdata"
-			case .Number:        return "number"
-			case .String:        return "string"
-			case .Table:         return "table"
-			case .Function:      return "function"
+			case .LightUserData:    return "lightuserdata"
+			case .Number:           return "number"
+			case .String:           return "string"
+			case .Table:            return "table"
+			case .Function:         return "function"
+			case .UserData:         return "userdata"
+			case .Custom(let type): return Swift.String(describing: type.typeName)
 		}
 	}
 }

@@ -29,4 +29,14 @@ extension LuaVM {
 	public func pushValue(atIndex index: Index) {
 		lua_pushvalue(self.state, index)
 	}
+	
+	/// Remove the element at `Index` shifting other elements down to fill the
+	/// gap
+	///
+	/// - Precondition: `Index` is not a pseudo-index
+	///
+	/// - Parameter index: The index to remove
+	public func remove(atIndex index: Index) {
+		lua_remove(self.state, index)
+	}
 }

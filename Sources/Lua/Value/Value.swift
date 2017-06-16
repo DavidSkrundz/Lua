@@ -22,6 +22,7 @@ extension String: Value {}
 extension Number: Value {}
 extension Table: Value {}
 extension Function: Value {}
+extension UserData: Value {}
 extension LightUserData: Value {}
 
 public func equal(_ lhs: Value, _ rhs: Value) -> Bool {
@@ -33,6 +34,7 @@ public func equal(_ lhs: Value, _ rhs: Value) -> Bool {
 		case is (Number, Number):               return (lhs as! Number) == (rhs as! Number)
 		case is (Table, Table):                 return (lhs as! Table) == (rhs as! Table)
 		case is (Function, Function):           return (lhs as! Function) == (rhs as! Function)
+		case is (UserData, UserData):           return (lhs as! UserData) == (rhs as! UserData)
 		case is (LightUserData, LightUserData): return (lhs as! LightUserData) == (rhs as! LightUserData)
 		
 		case is (Int, Number):                  return (lhs as! Int) == (rhs as! Number).intValue

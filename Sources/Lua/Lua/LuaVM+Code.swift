@@ -62,4 +62,42 @@ extension LuaVM {
 	internal func load(function: @escaping CLuaFunction, valueCount: Count) {
 		lua_pushcclosure(self.state, function, valueCount)
 	}
+	
+	/// Store a `LuaFunction` into `self` for use from Lua
+	///
+	/// The Lua `Function` is put to the top of the stack
+	internal func register(function: @escaping LuaFunction) {
+		// TODO: Find a way to know when the function gets garbage collected
+		// TODO: Free the function from `self.functions`
+		
+		
+		// Push self
+		let selfPointer = Unmanaged.passUnretained(self).toOpaque()
+		self.push(selfPointer)
+		// Push Reference index
+		self.push(self.functions.count)
+		
+		self.load(function: wrapperFunction, valueCount: 2)
+		
+		self.functions.append(function)
+	}
+}
+
+/// Turn a `LuaFunction` into a `CLuaFunction`
+private func wrapperFunction(_ state: OpaquePointer!) -> Count {
+	let lua = Lua(raw: LuaVM(state: state))
+	
+	let selfLuaIndex = lua.raw.upValueIndex(index: 1)
+	let selfLuaPointer = lua.raw.getUserData(atIndex: selfLuaIndex)
+	let selfLuaVM = Unmanaged<LuaVM>
+		.fromOpaque(selfLuaPointer!)
+		.takeUnretainedValue()
+	
+	let closureIndexIndex = lua.raw.upValueIndex(index: 2)
+	let closureIndex = lua.raw.getInt(atIndex: closureIndexIndex)!
+	let closure = selfLuaVM.functions[closureIndex]
+	
+	let values = closure(lua)
+	values.forEach { lua.push(value: $0) }
+	return Count(values.count)
 }

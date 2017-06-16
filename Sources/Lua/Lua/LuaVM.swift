@@ -14,8 +14,14 @@ public final class LuaVM {
 	public static let minorVersion = Int(LUA_VERSION_MINOR)!
 	public static let patchVersion = Int(LUA_VERSION_RELEASE)!
 	
+	/// A `Bool` that 
 	private let shouldDeinit: Bool
+	
+	/// A pointer to the Lua state C struct
 	internal let state: OpaquePointer!
+	
+	/// Holds all functions that were registered
+	internal var functions = [LuaFunction]()
 	
 	/// Create a new LuaVM with the default memory allocator
 	internal init() {
