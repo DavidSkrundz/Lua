@@ -70,6 +70,7 @@ class CustomTypeTests: XCTestCase {
 		("testTypeCreation", testTypeCreation),
 		("testInstanceCreation", testInstanceCreation),
 		("testMethodCall", testMethodCall),
+		("testTypeChecking", testTypeChecking),
 	]
 }
 
