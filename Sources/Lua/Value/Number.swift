@@ -3,10 +3,10 @@
 //  Lua
 //
 
-private protocol NumberComparable: Value {}
-extension Int: NumberComparable {}
-extension UInt32: NumberComparable {}
-extension Double: NumberComparable {}
+public protocol Numeric {}
+extension Int: Numeric {}
+extension UInt32: Numeric {}
+extension Double: Numeric {}
 
 /// Represents a Lua numeric value since Lua does not make a distinction between
 /// `Int` and `Double`
@@ -65,10 +65,10 @@ public final class Number {
 	/// - Parameter comparator: The `Comparator` to use
 	///
 	/// - Returns: `true` if the comparison holds
-	fileprivate func compare<RHS: NumberComparable>(toRHS rhs: RHS,
+	fileprivate func compare<RHS: Numeric>(toRHS rhs: RHS,
 	                         comparator: Comparator) -> Bool {
 		self.lua.push(value: self)
-		self.lua.push(value: rhs)
+		self.lua.push(value: rhs as! Value)
 		defer { self.lua.raw.pop(2) }
 		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
 		                            comparator: comparator)
@@ -80,9 +80,9 @@ public final class Number {
 	/// - Parameter comparator: The `Comparator` to use
 	///
 	/// - Returns: `true` if the comparison holds
-	fileprivate func compare<LHS: NumberComparable>(toLHS lhs: LHS,
+	fileprivate func compare<LHS: Numeric>(toLHS lhs: LHS,
 	                         comparator: Comparator) -> Bool {
-		self.lua.push(value: lhs)
+		self.lua.push(value: lhs as! Value)
 		self.lua.push(value: self)
 		defer { self.lua.raw.pop(2) }
 		return self.lua.raw.compare(index1: SecondIndex, index2: TopIndex,
@@ -104,101 +104,35 @@ public func <=(lhs: Number, rhs: Number) -> Bool {
 	return lhs.compare(to: rhs, comparator: .LessThanEqual)
 }
 
-// Int
-public func ==(lhs: Int, rhs: Number) -> Bool {
+// Numeric
+public func ==<T: Numeric>(lhs: T, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .Equal)
 }
 
-public func <(lhs: Int, rhs: Number) -> Bool {
+public func <<T: Numeric>(lhs: T, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .LessThan)
 }
 
-public func <=(lhs: Int, rhs: Number) -> Bool {
+public func <=<T: Numeric>(lhs: T, rhs: Number) -> Bool {
 	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
 }
 
-public func !=(lhs: Int, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func >(lhs: Int, rhs: Number) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: Int, rhs: Number) -> Bool { return !(lhs < rhs) }
+public func !=<T: Numeric>(lhs: T, rhs: Number) -> Bool { return !(lhs == rhs) }
+public func ><T: Numeric>(lhs: T, rhs: Number) -> Bool { return !(lhs <= rhs) }
+public func >=<T: Numeric>(lhs: T, rhs: Number) -> Bool { return !(lhs < rhs) }
 
-public func ==(lhs: Number, rhs: Int) -> Bool {
+public func ==<T: Numeric>(lhs: Number, rhs: T) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .Equal)
 }
 
-public func <(lhs: Number, rhs: Int) -> Bool {
+public func <<T: Numeric>(lhs: Number, rhs: T) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .LessThan)
 }
 
-public func <=(lhs: Number, rhs: Int) -> Bool {
+public func <=<T: Numeric>(lhs: Number, rhs: T) -> Bool {
 	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
 }
 
-public func !=(lhs: Number, rhs: Int) -> Bool { return !(lhs == rhs) }
-public func >(lhs: Number, rhs: Int) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: Number, rhs: Int) -> Bool { return !(lhs < rhs) }
-
-// UInt32
-public func ==(lhs: UInt32, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .Equal)
-}
-
-public func <(lhs: UInt32, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .LessThan)
-}
-
-public func <=(lhs: UInt32, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
-}
-
-public func !=(lhs: UInt32, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func >(lhs: UInt32, rhs: Number) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: UInt32, rhs: Number) -> Bool { return !(lhs < rhs) }
-
-public func ==(lhs: Number, rhs: UInt32) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .Equal)
-}
-
-public func <(lhs: Number, rhs: UInt32) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .LessThan)
-}
-
-public func <=(lhs: Number, rhs: UInt32) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
-}
-
-public func !=(lhs: Number, rhs: UInt32) -> Bool { return !(lhs == rhs) }
-public func >(lhs: Number, rhs: UInt32) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: Number, rhs: UInt32) -> Bool { return !(lhs < rhs) }
-
-// Double
-public func ==(lhs: Double, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .Equal)
-}
-
-public func <(lhs: Double, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .LessThan)
-}
-
-public func <=(lhs: Double, rhs: Number) -> Bool {
-	return rhs.compare(toLHS: lhs, comparator: .LessThanEqual)
-}
-
-public func !=(lhs: Double, rhs: Number) -> Bool { return !(lhs == rhs) }
-public func >(lhs: Double, rhs: Number) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: Double, rhs: Number) -> Bool { return !(lhs < rhs) }
-
-public func ==(lhs: Number, rhs: Double) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .Equal)
-}
-
-public func <(lhs: Number, rhs: Double) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .LessThan)
-}
-
-public func <=(lhs: Number, rhs: Double) -> Bool {
-	return lhs.compare(toRHS: rhs, comparator: .LessThanEqual)
-}
-
-public func !=(lhs: Number, rhs: Double) -> Bool { return !(lhs == rhs) }
-public func >(lhs: Number, rhs: Double) -> Bool { return !(lhs <= rhs) }
-public func >=(lhs: Number, rhs: Double) -> Bool { return !(lhs < rhs) }
+public func !=<T: Numeric>(lhs: Number, rhs: T) -> Bool { return !(lhs == rhs) }
+public func ><T: Numeric>(lhs: Number, rhs: T) -> Bool { return !(lhs <= rhs) }
+public func >=<T: Numeric>(lhs: Number, rhs: T) -> Bool { return !(lhs < rhs) }
