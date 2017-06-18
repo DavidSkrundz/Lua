@@ -19,11 +19,7 @@ extension Lua {
 		try self.raw.createMetatable(name: String(describing: T.typeName))
 		let metaType = CustomType<T>(lua: self)
 		
-		self.globals["Object"] = staticTable
-		
-		// TODO: Find out what more i need to do here
-		//self.setMetatable(customType, for: customType)
-		//customType["__name"] = String(describing: T.typeName)
+		self.globals[String(describing: T.typeName)] = staticTable
 		
 		staticTable["new"] = self.createFunction(Lua.wrap(T.initializer))
 		T.functions.forEach { staticTable[$0] = self.createFunction($1) }
