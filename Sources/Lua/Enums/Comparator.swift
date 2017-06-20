@@ -10,9 +10,9 @@ internal enum Comparator: RawRepresentable {
 	case LessThan
 	case LessThanEqual
 	
-	public typealias RawValue = Int32
+	internal typealias RawValue = Int32
 	
-	public init(rawValue: RawValue) {
+	internal init(rawValue: RawValue) {
 		switch rawValue {
 			case LUA_OPEQ: self = .Equal
 			case LUA_OPLT: self = .LessThan
@@ -21,7 +21,7 @@ internal enum Comparator: RawRepresentable {
 		}
 	}
 	
-	public var rawValue: RawValue {
+	internal var rawValue: RawValue {
 		switch self {
 			case .Equal:         return LUA_OPEQ
 			case .LessThan:      return LUA_OPLT

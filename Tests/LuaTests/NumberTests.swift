@@ -3,7 +3,7 @@
 //  Lua
 //
 
-@testable import Lua
+import Lua
 import XCTest
 
 class NumberTests: XCTestCase {
@@ -89,10 +89,7 @@ class NumberTests: XCTestCase {
 	func testNumberConversion() {
 		do {
 			let lua = Lua()
-			guard let number = try lua.run("return -4.3").first as? Number else {
-				XCTFail()
-				return
-			}
+			let number = try lua.run("return -4.3")[0] as! Number
 			XCTAssertEqual(number.intValue, Int(-4))
 			XCTAssertEqual(number.uintValue, UInt32(bitPattern: Int32(-4)))
 			XCTAssertEqual(number.doubleValue, Double(-4.3))

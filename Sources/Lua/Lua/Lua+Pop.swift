@@ -12,7 +12,7 @@ extension Lua {
 	///
 	/// - Returns: The values that were popped in the reverse order (first value
 	///            popped is the last in the list)
-	public func popValues(toSize size: Index) -> [Value] {
+	internal func popValues(toSize size: Index) -> [Value] {
 		precondition(self.raw.stackSize() >= size)
 		return (size..<self.raw.stackSize())
 			.map { _ in self.pop() }
@@ -25,7 +25,8 @@ extension Lua {
 	public func pop(index: Index = TopIndex) -> Value {
 		let value: Value
 		switch self.raw.type(atIndex: index) {
-			case .LightUserData: value = LightUserData(lua: self)
+			case .Nil:           value = Nil()
+			case .LightUserData: value = self.raw.getUserData(atIndex: index)!
 			case .Number:
 				self.raw.pushValue(atIndex: index)
 				value = Number(lua: self)

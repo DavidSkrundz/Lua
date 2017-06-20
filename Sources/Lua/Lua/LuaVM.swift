@@ -9,11 +9,6 @@ import CLua
 ///
 /// Provides direct access to the C API
 public final class LuaVM {
-	public static let versionString = LUA_VERSION_RELEASE
-	public static let majorVersion = Int(LUA_VERSION_MAJOR)!
-	public static let minorVersion = Int(LUA_VERSION_MINOR)!
-	public static let patchVersion = Int(LUA_VERSION_RELEASE)!
-	
 	/// A `Bool` that 
 	private let shouldDeinit: Bool
 	

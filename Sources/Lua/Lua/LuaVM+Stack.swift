@@ -18,7 +18,7 @@ extension LuaVM {
 	/// - Precondition: `count >= 0`
 	///
 	/// - Parameter count: The number of elements to pop
-	public func pop(_ count: Count) {
+	internal func pop(_ count: Count) {
 		precondition(count >= 0)
 		lua_settop(self.state, -count - 1)
 	}
@@ -26,7 +26,7 @@ extension LuaVM {
 	/// Push a copy of the element at `Index` to the top of the stack
 	///
 	/// - Parameter index: The index of the element to copy
-	public func pushValue(atIndex index: Index) {
+	internal func pushValue(atIndex index: Index) {
 		lua_pushvalue(self.state, index)
 	}
 	
@@ -36,7 +36,7 @@ extension LuaVM {
 	/// - Precondition: `Index` is not a pseudo-index
 	///
 	/// - Parameter index: The index to remove
-	public func remove(atIndex index: Index) {
+	internal func remove(atIndex index: Index) {
 		lua_remove(self.state, index)
 	}
 }

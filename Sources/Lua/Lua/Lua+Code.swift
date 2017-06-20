@@ -29,7 +29,7 @@ extension Lua {
 	///           `LuaError.GarbageCollector` depending on the error
 	///
 	/// - Returns: The `[Value]` returned by the function
-	public func call(function: Function,
+	internal func call(function: Function,
 	                 arguments: [Value] = []) throws -> [Value] {
 		let originalStackSize = self.raw.stackSize()
 		self.push(value: function)

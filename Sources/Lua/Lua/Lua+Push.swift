@@ -5,7 +5,7 @@
 
 extension Lua {
 	/// Push a `Value` onto the stack
-	internal func push(value: Value) {
+	public func push(value: Value) {
 		switch value {
 			case is Int:            self.raw.push(value as! Int)
 			case is UInt32:         self.raw.push(value as! UInt32)
@@ -13,9 +13,9 @@ extension Lua {
 			case is String:         self.raw.push(value as! String)
 			case is Number:         self.push(valueOf: (value as! Number).reference)
 			case is Table:          self.push(valueOf: (value as! Table).reference)
-			case is LightUserData:  self.raw.push((value as! LightUserData).pointer)
 			case is UserData:       self.push(valueOf: (value as! UserData).reference)
 			case is Function:       self.push(valueOf: (value as! Function).reference)
+			case is UnsafeMutableRawPointer: self.raw.push((value as! UnsafeMutableRawPointer))
 			case is LuaConvertible: self.push(data: (value as! UserDataConvertible))
 			default:                fatalError("Unhandled type: \(type(of: value))")
 		}

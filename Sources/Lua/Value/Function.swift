@@ -30,6 +30,18 @@ public final class Function {
 		return self.lua.raw.compare(index1: TopIndex, index2: SecondIndex,
 		                            comparator: .Equal)
 	}
+	
+	/// Call `self` with the given arguments
+	///
+	/// - Parameter arguments: The arguments to pass to the function
+	///
+	/// - Throws: `LuaError.Runtime`, `LuaError.MessageHandler`, or
+	///           `LuaError.GarbageCollector` depending on the error
+	///
+	/// - Returns: The `[Value]` returned by the function
+	public func call(_ arguments: [Value]) throws -> [Value] {
+		return try self.lua.call(function: self, arguments: arguments)
+	}
 }
 
 extension Function: Equatable {}

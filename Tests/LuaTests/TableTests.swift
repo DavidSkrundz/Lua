@@ -3,7 +3,7 @@
 //  Lua
 //
 
-@testable import Lua
+import Lua
 import XCTest
 
 class TableTests: XCTestCase {

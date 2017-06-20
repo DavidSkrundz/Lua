@@ -3,15 +3,15 @@
 //  Lua
 //
 
-@testable import Lua
+import Lua
 import XCTest
 
 class UserDataTests: XCTestCase {
 	func testLightUserData() {
 		let lua = Lua()
-		lua.raw.push(UnsafeMutablePointer(bitPattern: 3)!)
-		lua.raw.push(UnsafeMutablePointer(bitPattern: 5)!)
-		lua.raw.push(UnsafeMutablePointer(bitPattern: 5)!)
+		lua.push(value: UnsafeMutableRawPointer(bitPattern: 3)!)
+		lua.push(value: UnsafeMutableRawPointer(bitPattern: 5)!)
+		lua.push(value: UnsafeMutableRawPointer(bitPattern: 5)!)
 		
 		let lud1 = lua.pop()
 		let lud2 = lua.pop()

@@ -6,6 +6,7 @@
 import CLua
 
 public enum Type: RawRepresentable {
+	case Nil
 	case LightUserData
 	case Number
 	case String
@@ -19,6 +20,7 @@ public enum Type: RawRepresentable {
 	
 	public init(rawValue: RawValue) {
 		switch rawValue {
+			case LUA_TNIL:           self = .Nil
 			case LUA_TLIGHTUSERDATA: self = .LightUserData
 			case LUA_TNUMBER:        self = .Number
 			case LUA_TSTRING:        self = .String
@@ -31,6 +33,7 @@ public enum Type: RawRepresentable {
 	
 	public var rawValue: RawValue {
 		switch self {
+			case .Nil:           return LUA_TNIL
 			case .LightUserData: return LUA_TLIGHTUSERDATA
 			case .Number:        return LUA_TNUMBER
 			case .String:        return LUA_TSTRING
@@ -46,6 +49,7 @@ public enum Type: RawRepresentable {
 extension Type: CustomStringConvertible {
 	public var description: String {
 		switch self {
+			case .Nil:              return "nil"
 			case .LightUserData:    return "lightuserdata"
 			case .Number:           return "number"
 			case .String:           return "string"

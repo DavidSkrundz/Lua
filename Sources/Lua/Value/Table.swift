@@ -19,8 +19,11 @@ public class Table {
 	}
 	
 	/// Access a field within the `Table`
+	///
+	/// - Precondition: `key` cannot be `Nil`
 	public subscript(key: Value) -> Value {
 		get {
+			precondition(!(key is Nil))
 			self.lua.push(value: self)
 			self.lua.push(value: key)
 			self.lua.raw.getTable(atIndex: SecondIndex)
@@ -28,6 +31,7 @@ public class Table {
 			return self.lua.pop()
 		}
 		set {
+			precondition(!(key is Nil))
 			self.lua.push(value: self)
 			self.lua.push(value: key)
 			self.lua.push(value: newValue)

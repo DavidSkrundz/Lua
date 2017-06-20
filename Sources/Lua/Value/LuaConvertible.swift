@@ -7,7 +7,7 @@
 /// `LuaConvertible` objects into `UserData`s
 ///
 /// Should not be used directly
-public protocol UserDataConvertible {
+public protocol UserDataConvertible: Value {
 	/// - Returns: The name of the type that will be used in Lua
 	static var typeName: StaticString { get }
 }
@@ -18,7 +18,7 @@ public protocol LuaConvertible: UserDataConvertible, Value {
 	static var typeName: StaticString { get }
 	
 	/// A function to act as an initializer for Lua
-	static var initializer: LuaInitializer<Self> { get }
+	static var initializer: LuaInitializer<Self>? { get }
 	
 	/// A list of static functions available from Lua
 	static var functions: [(String, LuaFunction)] { get }

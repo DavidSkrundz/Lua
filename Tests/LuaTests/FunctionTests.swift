@@ -3,26 +3,10 @@
 //  Lua
 //
 
-@testable import Lua
+import Lua
 import XCTest
 
 class FunctionTests: XCTestCase {
-	func testRawFunction() {
-		let lua = Lua()
-		lua.raw.load(function: { (state) -> Count in
-			let lua = Lua(raw: LuaVM(state: state))
-			let a = lua.pop() as! Number
-			let b = lua.pop() as! Number
-			lua.push(value: a.intValue + b.intValue)
-			return 1
-		}, valueCount: 0)
-		lua.push(value: 5)
-		lua.push(value: 10)
-		try! lua.raw.protectedCall(nargs: 2, nrets: 1)
-		AssertEqual(lua.pop(), 15)
-		XCTAssertEqual(lua.raw.stackSize(), 0)
-	}
-	
 	func testFunction() {
 		do {
 			let lua = Lua()
@@ -32,7 +16,7 @@ class FunctionTests: XCTestCase {
 				let b = (lua.pop() as! Number).intValue
 				return [a + b]
 			}
-			let values = try lua.call(function: addFunc, arguments: [7, 11])
+			let values = try addFunc.call([7, 11])
 			AssertEqual(values, [18])
 			XCTAssertEqual(lua.raw.stackSize(), 0)
 		} catch let e as LuaError {
@@ -81,7 +65,7 @@ class FunctionTests: XCTestCase {
 			_ = try lua.run("return append(5, 'two')")
 			XCTFail()
 		} catch let LuaError.Runtime(message) {
-			XCTAssertEqual(message, "Invalid argument type. Found number expecting string")
+			XCTAssertEqual(message, "[string \"return append(5, 'two')\"]:1: bad argument #1 to 'append' (string expected, got number)")
 		} catch let e as LuaError {
 			XCTFail(e.description)
 		} catch let e {
@@ -98,7 +82,7 @@ class FunctionTests: XCTestCase {
 	}
 	
 	static var allTests = [
-		("testRawFunction", testRawFunction),
+//		("testRawFunction", testRawFunction),
 		("testFunction", testFunction),
 		("testWrappedFunction", testWrappedFunction),
 		("testTypeChecker", testTypeChecker),

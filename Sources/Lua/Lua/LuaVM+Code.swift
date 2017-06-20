@@ -19,9 +19,11 @@ extension LuaVM {
 	///
 	/// - Throws: `LuaError.Runtime`, `LuaError.MessageHandler`, or
 	///           `LuaError.GarbageCollector` depending on the error
-	public func protectedCall(nargs: Count, nrets: Count,
-	                          messageHandlerIndex: Index = 0) throws {
-		let result = lua_pcallk(self.state, nargs, nrets, messageHandlerIndex,
+	internal func protectedCall(nargs: Count, nrets: Count,
+	                            messageHandlerIndex: Index = 0) throws {
+		let result = lua_pcallk(self.state,
+		                        nargs, nrets,
+		                        messageHandlerIndex,
 		                        0, nil)
 		let status = Status(rawValue: result)
 		if status == .OK { return }
@@ -42,7 +44,7 @@ extension LuaVM {
 	///
 	/// - Throws: `LuaError.Syntax`, `LuaError.GarbageCollector` depending on 
 	///           the error
-	public func load(code: String) throws {
+	internal func load(code: String) throws {
 		let result = luaL_loadstring(self.state, code)
 		let status = Status(rawValue: result)
 		if status == .OK { return }
@@ -59,6 +61,8 @@ extension LuaVM {
 	/// Load a `CLuaFunction` onto the stack
 	///
 	/// - Parameter function: The function to load
+	/// - Parameter valueCount: The number of values on the stack that should
+	///                         be bound to the function
 	internal func load(function: @escaping CLuaFunction, valueCount: Count) {
 		lua_pushcclosure(self.state, function, valueCount)
 	}
@@ -71,10 +75,9 @@ extension LuaVM {
 		// TODO: Free the function from `self.functions`
 		
 		
-		// Push self
-		let selfPointer = Unmanaged.passUnretained(self).toOpaque()
-		self.push(selfPointer)
-		// Push Reference index
+		// Push a weak pointer to self
+		self.push(Unmanaged.passUnretained(self).toOpaque())
+		// Push the index of the function
 		self.push(self.functions.count)
 		
 		self.load(function: wrapperFunction, valueCount: 2)

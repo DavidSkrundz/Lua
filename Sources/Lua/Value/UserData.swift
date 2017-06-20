@@ -32,7 +32,7 @@ public final class UserData {
 	}
 	
 	/// - Returns: `self`'s pointer
-	public func rawPointer() -> UnsafeMutablePointer<UserDataConvertible> {
+	private func rawPointer() -> UnsafeMutablePointer<UserDataConvertible> {
 		self.lua.push(value: self)
 		let pointer = self.lua.raw.getUserData(atIndex: TopIndex)
 		self.lua.raw.pop(1)
@@ -40,7 +40,7 @@ public final class UserData {
 	}
 	
 	/// - Returns: `self`'s pointer cast to a `T`
-	public func pointer<T: UserDataConvertible>() -> UnsafeMutablePointer<T> {
+	internal func pointer<T: UserDataConvertible>() -> UnsafeMutablePointer<T> {
 		return self
 			.rawPointer()
 			.withMemoryRebound(to: T.self, capacity: 1, { $0 })

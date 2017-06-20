@@ -40,7 +40,7 @@ extension Lua {
 	internal static func wrap<T: LuaConvertible>(_ closure: @escaping LuaMethod<T>) -> LuaFunction {
 		return { (lua) -> [Value] in
 			if lua.raw.stackSize() == 0 {
-				lua.raw.error("Missing instance argument")
+				lua.raw.argumentError(1, "missing instance argument")
 			}
 			
 			let obj: T = (lua.pop(index: BottomIndex) as! UserData).toType()
@@ -77,23 +77,19 @@ extension Lua {
 	private static func extractValues(from lua: Lua,
 	                                  withTypes types: [Type]) -> [Value] {
 		if Int(lua.raw.stackSize()) != types.count {
-			lua.raw.error("Invalid number of arguments. Got \(lua.raw.stackSize()) expecting \(types.count)")
+			lua.raw.error("bad argument count: Got \(lua.raw.stackSize()) expecting \(types.count)")
 		}
 		
 		var values = [Value]()
-		for type in types {
-			let foundType = lua.raw.type(atIndex: BottomIndex)
-			if type == foundType {
-				values.append(lua.pop(index: BottomIndex))
-				continue
+		for index in 1..<Index(types.count + 1) {
+			if case Type.Custom(let customType) = types[Int(index-1)] {
+				let v = lua.raw.checkUserData(atIndex: index, type: customType)
+				values.append(v)
+			} else {
+				lua.raw.checkType(atIndex: index, type: types[Int(index-1)])
+				lua.raw.pushValue(atIndex: index)
+				values.append(lua.pop())
 			}
-			if case Type.Custom(let customType) = type, foundType == .UserData {
-				// TODO: Check type
-				let t = (lua.pop(index: BottomIndex) as! UserData).rawPointer()
-				values.append(t.pointee as! Value)
-				continue
-			}
-			lua.raw.error("Invalid argument type. Found \(foundType) expecting \(type)")
 		}
 		return values
 	}
