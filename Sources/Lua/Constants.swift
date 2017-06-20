@@ -30,3 +30,6 @@ internal let RegistryIndex: Index = -LUAI_MAXSTACK - 1000
 
 /// The index in the registry where the global values are stored
 internal let RegistryGlobalsIndex = LUA_RIDX_GLOBALS
+
+/// The error code for IO error
+internal let LUA_ERRFILE = LUA_ERRERR + 1

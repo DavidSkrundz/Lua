@@ -9,6 +9,7 @@ public enum LuaError: Error {
 	case GarbageCollector(String)
 	case MessageHandler(String)
 	case TypeCreation(String)
+	case IO(String)
 	
 	public var description: String {
 		switch self {
@@ -17,6 +18,7 @@ public enum LuaError: Error {
 			case let .GarbageCollector(s): return ".GarbageCollector: \(s)"
 			case let .MessageHandler(s):   return ".MessageHandler: \(s)"
 			case let .TypeCreation(s):     return ".TypeCreation: \(s)"
+			case let .IO(s):               return ".IO: \(s)"
 		}
 	}
 }

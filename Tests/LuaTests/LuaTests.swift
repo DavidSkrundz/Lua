@@ -4,6 +4,7 @@
 //
 
 import Lua
+import Foundation
 import XCTest
 
 class LuaTests: XCTestCase {
@@ -15,6 +16,17 @@ class LuaTests: XCTestCase {
 	static var allTests = [
 		("testLua", testLua),
 	]
+}
+
+func CDToProjectDirectory() {
+	let projectDirectory = URL(fileURLWithPath: #file)
+		.deletingLastPathComponent()
+		.deletingLastPathComponent()
+		.deletingLastPathComponent()
+		.path
+	if !FileManager.default.changeCurrentDirectoryPath(projectDirectory) {
+		fatalError("Failed to cd to: \(projectDirectory)")
+	}
 }
 
 func AssertEqual(_ lhs: Value, _ rhs: Value,

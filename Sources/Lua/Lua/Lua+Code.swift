@@ -3,6 +3,8 @@
 //  Lua
 //
 
+import Foundation
+
 extension Lua {
 	/// Run a `String` of Lua code as a `Function` that takes no arguments
 	///
@@ -16,6 +18,21 @@ extension Lua {
 	public func run(_ code: String) throws -> [Value] {
 		let originalStackSize = self.raw.stackSize()
 		try self.raw.load(code: code)
+		try self.raw.protectedCall(nargs: 0, nrets: MultipleReturns)
+		return self.popValues(toSize: originalStackSize)
+	}
+	
+	/// Run a Lua file as a `Function` that takes not arguments
+	///
+	/// - Parameter path: A `URL` to the file
+	///
+	/// - Throws: `LuaError.Syntax`, `LuaError.GarbageCollector`, or
+	///           `LuaError.IO` depending on the error
+	///
+	/// - Returns: Any `Value`s returned by the Lua code
+	public func run(file: URL) throws -> [Value] {
+		let originalStackSize = self.raw.stackSize()
+		try self.raw.load(file: file)
 		try self.raw.protectedCall(nargs: 0, nrets: MultipleReturns)
 		return self.popValues(toSize: originalStackSize)
 	}

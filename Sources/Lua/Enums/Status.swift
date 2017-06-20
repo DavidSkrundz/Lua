@@ -13,6 +13,7 @@ internal enum Status: RawRepresentable {
 	case MemoryError
 	case ErrGCMM
 	case Error
+	case IOError
 	
 	internal typealias RawValue = Int32
 	
@@ -25,6 +26,7 @@ internal enum Status: RawRepresentable {
 			case LUA_ERRMEM:    self = .MemoryError
 			case LUA_ERRGCMM:   self = .ErrGCMM
 			case LUA_ERRERR:    self = .Error
+			case LUA_ERRFILE:   self = .IOError
 			default:            fatalError("Unhandled value: \(rawValue)")
 		}
 	}
@@ -38,6 +40,7 @@ internal enum Status: RawRepresentable {
 			case .MemoryError: return LUA_ERRMEM
 			case .ErrGCMM:     return LUA_ERRGCMM
 			case .Error:       return LUA_ERRERR
+			case .IOError:     return LUA_ERRFILE
 		}
 	}
 }

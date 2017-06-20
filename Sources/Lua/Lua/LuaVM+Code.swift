@@ -5,6 +5,8 @@
 
 import CLua
 
+import Foundation
+
 extension LuaVM {
 	/// Calls a function in protected mode.  Does not allow it to yield
 	///
@@ -42,7 +44,7 @@ extension LuaVM {
 	///
 	/// - Parameter code: The `String` to be loaded
 	///
-	/// - Throws: `LuaError.Syntax`, `LuaError.GarbageCollector` depending on 
+	/// - Throws: `LuaError.Syntax` or `LuaError.GarbageCollector` depending on
 	///           the error
 	internal func load(code: String) throws {
 		let result = luaL_loadstring(self.state, code)
@@ -54,6 +56,27 @@ extension LuaVM {
 			case .SyntaxError: throw LuaError.Syntax(message)
 			case .MemoryError: fatalError("Out of memory")
 			case .ErrGCMM:     throw LuaError.GarbageCollector(message)
+			default:           fatalError("Unhandled Status: \(status)")
+		}
+	}
+	
+	/// Load a file as a Lua chunk without running it
+	///
+	/// - Parameter file: The path to the file to load
+	///
+	/// - Throws: `LuaError.Syntax`, `LuaError.GarbageCollector`, or 
+	///           `LuaError.IO` depending on the error
+	internal func load(file: URL) throws {
+		let result = luaL_loadfilex(self.state, file.path, nil)
+		let status = Status(rawValue: result)
+		if status == .OK { return }
+		let message = self.getString(atIndex: TopIndex)!
+		self.pop(1)
+		switch status {
+			case .SyntaxError: throw LuaError.Syntax(message)
+			case .MemoryError: fatalError("Out of memory")
+			case .ErrGCMM:     throw LuaError.GarbageCollector(message)
+			case .IOError:     throw LuaError.IO(message)
 			default:           fatalError("Unhandled Status: \(status)")
 		}
 	}

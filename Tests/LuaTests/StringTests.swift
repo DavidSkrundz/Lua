@@ -4,6 +4,7 @@
 //
 
 import Lua
+import Foundation
 import XCTest
 
 class StringTests: XCTestCase {
@@ -31,8 +32,23 @@ class StringTests: XCTestCase {
 		}
 	}
 	
+	func testReturnStringFromFile() {
+		CDToProjectDirectory()
+		do {
+			let lua = Lua()
+			let filePath = URL(fileURLWithPath: "Tests/testfile.lua")
+			let results = try lua.run(file: filePath)
+			AssertEqual(results, ["Wowo"])
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+	}
+	
 	static var allTests = [
 		("testReturnString", testReturnString),
 		("testMultipleReturnStrings", testMultipleReturnStrings),
+		("testReturnStringFromFile", testReturnStringFromFile),
 	]
 }
