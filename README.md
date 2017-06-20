@@ -4,6 +4,7 @@ Lua [![Swift Version](https://img.shields.io/badge/Swift-3.1-orange.svg)](https:
 A Swift wraper for Lua 5.2.4
 
 **Not every feature is implemented, and the API is not yet stable**
+**Feel free to open a new issue or pull request**
 
 Types
 -----
