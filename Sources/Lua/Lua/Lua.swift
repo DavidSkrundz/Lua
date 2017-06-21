@@ -25,4 +25,9 @@ public final class Lua {
 		self.raw.getFieldRaw(RegistryGlobalsIndex, atIndex: RegistryIndex)
 		return Table(lua: self)
 	}
+	
+	/// Load the provided Lua standard libraries
+	public func loadLibs(_ libs: [LuaLib]) {
+		self.raw.load(libs)
+	}
 }

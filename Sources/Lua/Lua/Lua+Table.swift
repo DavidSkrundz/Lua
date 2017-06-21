@@ -16,15 +16,4 @@ extension Lua {
 		self.raw.createTable(size: size, count: count)
 		return Table(lua: self)
 	}
-//	
-//	/// Set `meta` as the metatable of `target`
-//	///
-//	/// - Parameter meta: The metatable to set
-//	/// - Parameter target: The `Table` whose metatable to set
-//	public func setMetatable(_ meta: Table, for target: Table) {
-//		self.push(value: target)
-//		self.push(value: meta)
-//		self.raw.setMetatable(atIndex: SecondIndex)
-//		self.raw.pop(1)
-//	}
 }

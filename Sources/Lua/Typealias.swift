@@ -9,6 +9,9 @@ public typealias Index = Int32
 /// Represents a count (e.g. The number of arguments)
 public typealias Count = Int32
 
+/// The signature of functions that Lua uses to load standard libraries
+internal typealias LuaLoadFunction = (OpaquePointer!) -> Int32
+
 /// The signature of C functions that can be called by Lua
 ///
 /// The `OpaquePointer?` should be used to create a `LuaVM` and is the state

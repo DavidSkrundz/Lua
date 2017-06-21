@@ -60,6 +60,7 @@ Usage
 ### `Lua`
 
 - `Lua()` create a new virtual machine
+- `.loadLib([LuaLib])` loads the given standard libraries
 - `.globals -> Table` get the global value `Table`
 - `run(String) throws -> [Value]` runs a `String` as Lua code
 - `push(Value)` pushes a `Value` onto the stack
@@ -88,3 +89,4 @@ Future Additions
 - Expand the capabilities of `CustomType<T>`
 - Test `UserData` equality
 - Add `Bool` support
+- Support for more metamethods

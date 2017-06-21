@@ -13,8 +13,22 @@ class LuaTests: XCTestCase {
 		XCTAssertEqual(lua.raw.stackSize(), 0)
 	}
 	
+	func testLoadLibs() {
+		do {
+			let lua = Lua()
+			lua.loadLibs([.All])
+			let results = try lua.run("return type('a string')")
+			AssertEqual(results, ["string"])
+		} catch let e as LuaError {
+			XCTFail(e.description)
+		} catch let e {
+			XCTFail(e.localizedDescription)
+		}
+	}
+	
 	static var allTests = [
 		("testLua", testLua),
+		("testLoadLibs", testLoadLibs),
 	]
 }
 

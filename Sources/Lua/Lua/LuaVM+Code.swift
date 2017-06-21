@@ -40,6 +40,10 @@ extension LuaVM {
 		}
 	}
 	
+	internal func load(_ libs: [LuaLib]) {
+		libs.forEach { _ = $0.loadFunction(self.state) }
+	}
+	
 	/// Load a `String` as a Lua chunk without running it
 	///
 	/// - Parameter code: The `String` to be loaded
