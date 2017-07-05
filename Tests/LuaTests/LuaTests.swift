@@ -4,7 +4,6 @@
 //
 
 import Lua
-import Foundation
 import XCTest
 
 class LuaTests: XCTestCase {

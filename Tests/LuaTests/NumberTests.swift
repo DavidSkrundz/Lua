@@ -39,6 +39,9 @@ class NumberTests: XCTestCase {
 		let five = lua.pop() as! Number
 		lua.push(value: five)
 		let five2 = lua.pop() as! Number
+		XCTAssertTrue(five.isInt)
+		XCTAssertTrue(eight.isInt)
+		XCTAssertTrue(five2.isInt)
 		XCTAssertFalse(five != five2)
 		XCTAssertFalse(five >= eight)
 		XCTAssertFalse(5 != five2)
@@ -57,6 +60,9 @@ class NumberTests: XCTestCase {
 		let five = lua.pop() as! Number
 		lua.push(value: five)
 		let five2 = lua.pop() as! Number
+		XCTAssertTrue(five.isInt)
+		XCTAssertTrue(eight.isInt)
+		XCTAssertTrue(five2.isInt)
 		XCTAssertFalse(five != five2)
 		XCTAssertFalse(five >= eight)
 		XCTAssertTrue(five <= eight)
@@ -76,6 +82,9 @@ class NumberTests: XCTestCase {
 		let five = lua.pop() as! Number
 		lua.push(value: five)
 		let five2 = lua.pop() as! Number
+		XCTAssertFalse(five.isInt)
+		XCTAssertFalse(eight.isInt)
+		XCTAssertFalse(five2.isInt)
 		XCTAssertFalse(five != five2)
 		XCTAssertFalse(five >= eight)
 		XCTAssertFalse(5.3 != five2)
@@ -90,6 +99,7 @@ class NumberTests: XCTestCase {
 		do {
 			let lua = Lua()
 			let number = try lua.run("return -4.3")[0] as! Number
+			XCTAssertFalse(number.isInt)
 			XCTAssertEqual(number.intValue, Int(-4))
 			XCTAssertEqual(number.uintValue, UInt32(bitPattern: Int32(-4)))
 			XCTAssertEqual(number.doubleValue, Double(-4.3))
@@ -100,6 +110,15 @@ class NumberTests: XCTestCase {
 		}
 	}
 	
+	func testConvertedNumber() {
+		let lua = Lua()
+		lua.push(value: Int(-1000))
+		let number = lua.pop() as! Number
+		lua.push(value: number.uintValue)
+		let number2 = lua.pop() as! Number
+		XCTAssertEqual(number2.doubleValue, 4294966296.0)
+	}
+	
 	static var allTests = [
 		("testReturnNumber", testReturnNumber),
 		("testMultipleReturnNumbers", testMultipleReturnNumbers),
@@ -107,5 +126,6 @@ class NumberTests: XCTestCase {
 		("testNumberUIntComparison", testNumberUIntComparison),
 		("testNumberDoubleComparison", testNumberDoubleComparison),
 		("testNumberConversion", testNumberConversion),
+		("testConvertedNumber", testConvertedNumber),
 	]
 }

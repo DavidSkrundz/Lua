@@ -11,7 +11,7 @@ extension Lua {
 			case is UInt32:         self.raw.push(value as! UInt32)
 			case is Double:         self.raw.push(value as! Double)
 			case is String:         self.raw.push(value as! String)
-			case is Number:         self.push(valueOf: (value as! Number).reference)
+			case is Number:         self.raw.push((value as! Number).doubleValue)
 			case is Table:          self.push(valueOf: (value as! Table).reference)
 			case is UserData:       self.push(valueOf: (value as! UserData).reference)
 			case is Function:       self.push(valueOf: (value as! Function).reference)

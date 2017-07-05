@@ -4,7 +4,6 @@
 //
 
 import Lua
-import Foundation
 import XCTest
 
 class StringTests: XCTestCase {
@@ -36,7 +35,7 @@ class StringTests: XCTestCase {
 		CDToProjectDirectory()
 		do {
 			let lua = Lua()
-			let filePath = URL(fileURLWithPath: "Tests/testfile.lua")
+			let filePath = URL(fileURLWithPath: "test/testfile.lua")
 			let results = try lua.run(file: filePath)
 			AssertEqual(results, ["Wowo"])
 		} catch let e as LuaError {
