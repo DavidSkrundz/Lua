@@ -16,7 +16,9 @@
 /// - `Function`
 /// - `UserData`
 /// - `UnsafeMutableRawPointer`
-public protocol Value {}
+public protocol Value {
+	var hashValue: Int { get }
+}
 
 extension Int: Value {}
 extension UInt32: Value {}
@@ -52,7 +54,7 @@ public func equal(_ lhs: Value, _ rhs: Value) -> Bool {
 		case is (Number, UInt32):     return (lhs as! Number).uintValue == (rhs as! UInt32)
 		case is (Number, Double):     return (lhs as! Number).doubleValue == (rhs as! Double)
 		
-		default:                      fatalError("Unhandled Value equality combination")
+		default:                      return false
 	}
 }
 

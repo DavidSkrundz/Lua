@@ -8,6 +8,10 @@ public final class Function {
 	private let lua: Lua
 	internal let reference: Reference
 	
+	public var hashValue: Int {
+		return Int(self.reference.rawValue)
+	}
+	
 	/// Create a new `Function` by popping the top value from the stack
 	internal init(lua: Lua) {
 		self.lua = lua

@@ -6,6 +6,11 @@
 import CLua
 
 extension LuaVM {
+	/// Pushes a `nil` onto the stack
+	internal func pushNil() {
+		lua_pushnil(self.state)
+	}
+	
 	/// Push a `Double` onto the stack
 	internal func push(_ value: Double) {
 		lua_pushnumber(self.state, value)

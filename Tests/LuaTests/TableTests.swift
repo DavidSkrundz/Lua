@@ -44,9 +44,53 @@ class TableTests: XCTestCase {
 		}
 	}
 	
+	func testTableForEach() {
+		let lua = Lua()
+		let table = lua.createTable()
+		table["a"] = "a"
+		table[1] = 2
+		
+		var foundA = false
+		var found1 = false
+		table.forEach { (key: TableKey, value: Value) in
+			if (key == TableKey("a")) {
+				XCTAssertFalse(foundA)
+				AssertEqual(value, "a")
+				foundA = true
+			} else if (key == TableKey(1)) {
+				XCTAssertFalse(found1)
+				AssertEqual(value, 2)
+				found1 = true
+			} else {
+				XCTFail("Bad key, got \(key)")
+			}
+		}
+		XCTAssertTrue(foundA)
+		XCTAssertTrue(found1)
+	}
+	
+	func testTableToDictionary() {
+		let lua = Lua()
+		let table = lua.createTable()
+		table[1] = 1
+		table[2] = 5
+		table[3] = 10
+		table["key"] = "value"
+		table["otherKey"] = 2
+		let dict = table.toDictionary()
+		XCTAssertEqual(dict.count, 5)
+		AssertEqual(dict[TableKey(1)]!, 1)
+		AssertEqual(dict[TableKey(2)]!, 5)
+		AssertEqual(dict[TableKey(3)]!, 10)
+		AssertEqual(dict[TableKey("key")] ?? Nil(), "value")
+		AssertEqual(dict[TableKey("otherKey")] ?? Nil(), 2)
+	}
+	
 	static var allTests = [
 		("testAccessGlobals", testAccessGlobals),
 		("testEquality", testEquality),
 		("testCreateTable", testCreateTable),
+		("testTableForEach", testTableForEach),
+		("testTableToDictionary", testTableToDictionary),
 	]
 }

@@ -20,6 +20,7 @@ The `Number` class represents a numeric value within Lua.  It supports conversio
 - `.intValue -> Int`
 - `.uintValue -> UInt32`
 - `.doubleValue -> Double`
+- `.isInt -> Bool` true if `.doubleValue` contains no decimal places
 
 ###### UnsafeMutablePointer
 Swift's `UnsafeMutablePointer` is used to represent Lua lightuserdatas
@@ -28,6 +29,8 @@ Swift's `UnsafeMutablePointer` is used to represent Lua lightuserdatas
 The `Table` class represents a table within Lua.  It supports getting and setting values.
 
 - `subscript(Value) -> Value` get and set values
+- `forEach(body: (TableKey, Value) -> Void)` iterate over all key/value pairs in 
+- `toDictionary() -> [TableKey : Value]` fetches all of the key/value pairs from the Lua VM and returns a Dictionary
 
 ###### Function
 The `Function` class represents a Lua closure.  It supports calling with a list of `Value`s

@@ -12,6 +12,13 @@ public final class Number {
 	
 	public let isInt: Bool
 	
+	public var hashValue: Int {
+		if self.isInt {
+			return self.intValue.hashValue
+		}
+		return self.doubleValue.hashValue
+	}
+	
 	/// Create a new `Number` by popping the top value from the stack
 	internal init(lua: Lua) {
 		self.intValue = lua.raw.getInt(atIndex: TopIndex)!

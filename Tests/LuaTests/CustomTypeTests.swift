@@ -123,6 +123,10 @@ private final class Object: LuaConvertible {
 	
 	var suffix = ""
 	
+	var hashValue: Int {
+		return self.suffix.hashValue
+	}
+	
 	init(suffix: String) {
 		self.suffix = suffix
 	}
@@ -143,4 +147,8 @@ private final class Other: LuaConvertible {
 	
 	static let functions = [(String, LuaFunction)]()
 	static let methods = [(String, (Other, Lua) -> [Value])]()
+	
+	var hashValue: Int {
+		return 0
+	}
 }

@@ -23,6 +23,15 @@ extension Lua {
 	///
 	/// - Returns: The popped `Value`
 	public func pop(index: Index = TopIndex) -> Value {
+		defer { self.raw.remove(atIndex: index) }
+		return self.get(atIndex: index)
+	}
+	
+	/// Get the `Value` at `Index` (`TopIndex` by default) without removing it
+	/// from the stack
+	///
+	/// - Returns: The `Value`
+	public func get(atIndex index: Index = TopIndex) -> Value {
 		let value: Value
 		switch self.raw.type(atIndex: index) {
 			case .Nil:           value = Nil()
@@ -42,7 +51,6 @@ extension Lua {
 				value = UserData(lua: self)
 			case .Custom(_):     fatalError("Should never get called")
 		}
-		self.raw.remove(atIndex: index)
 		return value
 	}
 }

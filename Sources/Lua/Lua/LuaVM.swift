@@ -38,3 +38,25 @@ public final class LuaVM {
 		}
 	}
 }
+
+extension LuaVM {
+	/// Pop a key from the stack and push the next key-value pair from the table
+	/// at `Index`
+	///
+	/// - Returns: `false` if there are no more pairs
+	/// ```
+	/// /* the table is in the stack at index 't' */
+	/// lua.raw.pushNil(); /* first key */
+	/// while lua.raw.next(atIndex: t) {
+	///     /* 'key' (at `SecondIndex`) and 'value' (at `TopIndex`) */
+	///     let value = lua.pop()
+	///     /* keep 'key' for next iteration */
+	/// }
+	/// ```
+	///
+	/// - Note: While traversing a table, do not call `getString(atIndex:)`
+	/// directly on a key, unless you know that the key is actually a string.
+	internal func next(atIndex index: Index) -> Bool {
+		return lua_next(self.state, index) != 0
+	}
+}

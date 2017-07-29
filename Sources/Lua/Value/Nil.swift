@@ -4,4 +4,8 @@
 //
 
 /// Represents a `Nil` value in Lua
-internal struct Nil {}
+public struct Nil {
+	public let hashValue: Int = 0
+	
+	public init() {}
+}
